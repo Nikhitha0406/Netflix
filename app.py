@@ -4,40 +4,42 @@ import os
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-# Apply custom CSS for an eye-catching design
+# Apply custom CSS for a neon cyberpunk style
 st.markdown("""
     <style>
         body {
-            background-color: #0d0d0d;
+            background-color: #000000;
             color: white;
         }
         .stApp {
-            background-color: #111;
+            background-color: #000000;
         }
         .title {
             font-size: 50px;
             font-weight: bold;
             text-align: center;
-            color: #E50914;
-            text-shadow: 3px 3px 5px #ff0000;
+            color: #00D4FF;
+            text-shadow: 3px 3px 10px #00D4FF;
         }
         .subheader {
             font-size: 30px;
             font-weight: bold;
             text-align: center;
-            color: #FFD700;
-            text-shadow: 2px 2px 5px #FFA500;
+            color: #9A00FF;
+            text-shadow: 2px 2px 10px #9A00FF;
         }
         .movie-card {
-            background: linear-gradient(135deg, #ff6600, #ff0000);
+            background: linear-gradient(135deg, #242424, #1E1E1E);
             padding: 20px;
             border-radius: 12px;
             margin-bottom: 15px;
-            box-shadow: 3px 3px 15px rgba(255, 0, 0, 0.5);
+            box-shadow: 3px 3px 20px rgba(0, 212, 255, 0.6);
             transition: transform 0.3s ease-in-out;
+            border-left: 5px solid #00D4FF;
         }
         .movie-card:hover {
             transform: scale(1.05);
+            border-left: 5px solid #9A00FF;
         }
         .movie-title {
             font-size: 22px;
@@ -46,32 +48,35 @@ st.markdown("""
         }
         .movie-description {
             font-size: 18px;
-            color: #F5F5F5;
+            color: #CCCCCC;
         }
         .stTextInput > div > div > input {
-            border: 3px solid #FFD700;
-            background-color: #222;
+            border: 2px solid #00D4FF;
+            background-color: #121212;
             color: white;
             font-size: 18px;
         }
         .stSelectbox > div > div {
-            border: 3px solid #FFD700;
-            background-color: #222;
+            border: 2px solid #00D4FF;
+            background-color: #121212;
             color: white;
             font-size: 18px;
         }
         .stButton > button {
-            background: linear-gradient(135deg, #E50914, #ff6600);
+            background: linear-gradient(135deg, #00D4FF, #9A00FF);
             color: white;
             border-radius: 12px;
             padding: 15px 25px;
             font-size: 20px;
             font-weight: bold;
             transition: 0.3s;
+            border: none;
+            box-shadow: 2px 2px 15px rgba(154, 0, 255, 0.6);
         }
         .stButton > button:hover {
-            background: linear-gradient(135deg, #ff0000, #ff8800);
+            background: linear-gradient(135deg, #9A00FF, #00D4FF);
             transform: scale(1.1);
+            box-shadow: 2px 2px 25px rgba(154, 0, 255, 0.9);
         }
     </style>
 """, unsafe_allow_html=True)
@@ -126,7 +131,7 @@ def recommend_movies(title, df=df_movies, similarity=similarity_matrix):
 st.markdown('<p class="title">🎬 Netflix Movie Recommendation System</p>', unsafe_allow_html=True)
 
 # Movie input options
-st.markdown('<p class="subheader">🔥 Find Movies Similar to Your Favorites 🔥</p>', unsafe_allow_html=True)
+st.markdown('<p class="subheader">💡 Find Your Next Movie Night Pick 💡</p>', unsafe_allow_html=True)
 movie_name = st.text_input("🔍 Enter a movie title:")
 movie_list = df_movies["title"].tolist()
 selected_movie = st.selectbox("🎞️ Or select a movie:", [""] + movie_list)
@@ -136,9 +141,9 @@ if st.button("🎥 Get Recommendations"):
     query_movie = selected_movie if selected_movie else movie_name
     if query_movie:
         recommendations = recommend_movies(query_movie)
-        st.markdown('<p class="subheader">✨ Recommended Movies ✨</p>', unsafe_allow_html=True)
+        st.markdown('<p class="subheader">🔥 Recommended Movies 🔥</p>', unsafe_allow_html=True)
         
-        # Display movies in styled cards
+        # Display movies in stylish glowing cards
         for index, row in recommendations.iterrows():
             st.markdown(f"""
                 <div class="movie-card">
