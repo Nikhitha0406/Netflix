@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import os
@@ -19,14 +18,14 @@ body {
 h1 {
     color: white;
     text-align: center;
-    font-size: 50px;
+    font-size: 60px;  /* Increased Netflix size */
     font-weight: bold;
     margin-bottom: 10px;
     letter-spacing: 3px;
 }
 h2, label, p, .stMarkdown {
     color: white !important;
-    font-size: 18px;
+    font-size: 16px; /* Reduced recommendation size */
 }
 .stButton>button {
     background-color: #FF0000;
@@ -50,7 +49,7 @@ input, select {
     border-radius: 6px;
 }
 .netflix-text {
-    font-size: 50px;
+    font-size: 70px; /* Enlarged Netflix text */
     font-weight: bold;
     text-align: center;
     color: red;
@@ -59,6 +58,7 @@ input, select {
     display: inline-block;
     opacity: 0;
     animation: fadeInOut 4s infinite;
+    font-size: 80px; /* Increased animation size */
 }
 @keyframes fadeInOut {
     0% { opacity: 0; transform: translateY(-10px); }
@@ -69,7 +69,7 @@ input, select {
 .movie-title {
     color: #FFD700; /* Gold color for movie titles */
     font-weight: bold;
-    font-size: 18px;
+    font-size: 16px; /* Reduced size */
 }
 </style>
 """
