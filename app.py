@@ -23,11 +23,10 @@ h1 {
     margin-bottom: 10px;
     letter-spacing: 3px;
 }
-h2, label {
+h2, label, p, .stTextInput, .stSelectbox, .stMarkdown {
     color: white !important;
-    font-size: 20px;
+    font-size: 18px;
     text-align: center;
-    margin-bottom: 10px;
 }
 .stButton>button {
     background-color: #FF0000;
@@ -46,7 +45,7 @@ input, select {
     padding: 10px;
     width: 100%;
     background: rgba(255, 255, 255, 0.1);
-    border: 2px solid #FF0000;
+    border: 2px solid white;
     color: white;
     border-radius: 6px;
     text-align: center;
