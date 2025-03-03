@@ -72,12 +72,28 @@ input, select {
     font-size: 14px;
 }
 
+.search-title {
+    font-size: 18px; /* Default for desktop */
+    font-weight: bold;
+    color: white;
+    text-align: left;
+}
+
 @media (max-width: 768px) {
     h1 {
         font-size: 35px;
     }
     .letter {
         font-size: 50px;
+    }
+    .search-title {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .search-title {
+        font-size: 12px; /* Smaller for very small screens */
     }
 }
 </style>
@@ -141,7 +157,7 @@ def recommend_movies(title, df=df_movies, similarity=similarity_matrix):
 
 # Layout for Mobile View
 with st.container():
-    st.markdown("### 🔍 **Enter or Search a Movie:**")  
+    st.markdown("<p class='search-title'>🔍 Select or Search a Movie:</p>", unsafe_allow_html=True)
     selected_movie = st.selectbox("", [""] + df_movies["title"].tolist(), key="movie_select")
 
     st.markdown("")
