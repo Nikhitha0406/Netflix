@@ -1,0 +1,70 @@
+import streamlit as st
+import pandas as pd
+import zipfile
+import os
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+# Define paths
+zip_path = "netflix_titles.csv.zip"
+extract_folder = "extracted_files"
+csv_path = os.path.join(extract_folder, "netflix_titles.csv")
+
+# Extract ZIP file if not already extracted
+if not os.path.exists(extract_folder):
+    with zipfile.ZipFile(zip_path, "r") as zip_ref:
+        zip_ref.extractall(extract_folder)
+
+# Load dataset
+df = pd.read_csv(csv_path)
+
+# Handle missing values for necessary columns
+df.fillna({"description": "", "listed_in": "", "director": "", "cast": ""}, inplace=True)
+
+# Filter movies only
+df_movies = df[df["type"] == "Movie"].copy()
+
+# Create a combined features column
+df_movies["combined_features"] = (
+    df_movies["listed_in"] + " " +
+    df_movies["director"] + " " +
+    df_movies["cast"] + " " +
+    df_movies["description"]
+)
+
+# Apply TF-IDF
+tfidf = TfidfVectorizer(stop_words="english")
+tfidf_matrix = tfidf.fit_transform(df_movies["combined_features"])
+
+# Compute similarity matrix
+similarity_matrix = cosine_similarity(tfidf_matrix)
+
+# Reset index for movie dataset
+df_movies.reset_index(drop=True, inplace=True)
+
+# Movie recommendation function
+def recommend_movies(title, df=df_movies, similarity=similarity_matrix):
+    indices = df[df["title"].str.lower() == title.lower()].index
+
+    if len(indices) == 0:
+        return ["Movie not found. Please try another title."]
+
+    idx = indices[0]
+
+    # Get similarity scores
+    sim_scores = list(enumerate(similarity[idx]))
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)[1:6]  # Top 5 recommendations
+
+    # Get movie indices
+    movie_indices = [i[0] for i in sim_scores]
+
+    return df.iloc[movie_indices][["title", "description"]]
+
+# Streamlit UI
+st.title("Netflix Movie Recommendation System")
+movie_name = st.text_input("Enter a movie title:")
+if st.button("Get Recommendations"):
+    recommendations = recommend_movies(movie_name)
+    st.write("Recommended Movies:")
+    for index, row in recommendations.iterrows():
+        st.write(f"**{row['title']}** - {row['description']}")
