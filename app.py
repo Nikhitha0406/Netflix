@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import os
-import time
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -27,6 +26,10 @@ h1 {
     font-size: 18px;
     border-radius: 10px;
     width: 100%;
+    transition: 0.3s;
+}
+.stButton>button:hover {
+    background-color: #cc0000;
 }
 input, select {
     font-size: 18px;
@@ -38,28 +41,26 @@ input, select {
     border-radius: 5px;
 }
 .letter {
-    font-size: 50px;
+    font-size: 60px;
     color: #FF0000;
     font-weight: bold;
     display: inline-block;
-    opacity: 0;
-    animation: fadeIn 0.5s forwards;
+    animation: swing 1s ease-in-out infinite alternate;
 }
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+@keyframes swing {
+    0% { transform: rotate(-10deg); }
+    100% { transform: rotate(10deg); }
 }
 </style>
 """
 st.markdown(page_bg, unsafe_allow_html=True)
 
-# Netflix Animated Title
+# Netflix Swinging Animation Title
 netflix_text = "NETFLIX"
-animated_title = "".join([f'<span class="letter" style="animation-delay:{i*0.3}s;">{char}</span>' for i, char in enumerate(netflix_text)])
-st.markdown(f"<h1>{animated_title}</h1>", unsafe_allow_html=True)
+animated_netflix = "".join([f'<span class="letter" style="animation-delay:{i*0.2}s;">{char}</span>' for i, char in enumerate(netflix_text)])
 
-# Add Netflix Logo
-st.image("https://static.vecteezy.com/system/resources/previews/039/339/511/non_2x/netflix-company-logo-button-for-social-media-phone-icon-symbol-editorial-web-free-vector.jpg", width=300)
+st.subheader("🎬 Netflix Movie Recommendation System")
+st.markdown(f"<h1>{animated_netflix}</h1>", unsafe_allow_html=True)
 
 # Define CSV file path
 csv_path = "netflix_titles.csv"
@@ -106,9 +107,6 @@ def recommend_movies(title, df=df_movies, similarity=similarity_matrix):
     movie_indices = [i[0] for i in sim_scores]
     
     return df.iloc[movie_indices][["title", "description"]]
-
-# Streamlit UI
-st.subheader("🎬 Netflix Movie Recommendation System")
 
 # **Unified Input Bar**: Type or Select
 movie_list = df_movies["title"].tolist()
