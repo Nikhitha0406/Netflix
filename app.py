@@ -26,7 +26,6 @@ h1 {
 h2, label, p, .stTextInput, .stSelectbox, .stMarkdown {
     color: white !important;
     font-size: 18px;
-    text-align: center;
 }
 .stButton>button {
     background-color: #FF0000;
@@ -48,7 +47,6 @@ input, select {
     border: 2px solid white;
     color: white;
     border-radius: 6px;
-    text-align: center;
 }
 .netflix-text {
     font-size: 50px;
@@ -64,6 +62,16 @@ input, select {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
+}
+.movie-title {
+    color: red;
+    font-weight: bold;
+    font-size: 20px;
+}
+.search-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
 }
 </style>
 """
@@ -122,17 +130,19 @@ def recommend_movies(title, df=df_movies, similarity=similarity_matrix):
     
     return df.iloc[movie_indices][["title", "description"]]
 
-# **Unified Input Bar**: Type or Select
+# **Left-aligned Search/Select Bar**
 st.markdown("### 🔍 **Enter or Search a Movie:**")  
-movie_list = df_movies["title"].tolist()
-selected_movie = st.selectbox("", [""] + movie_list)
+col1, col2 = st.columns([2, 3])
 
-# Button to get recommendations
-if st.button("🍿 Get Recommendations"):
-    if selected_movie:
-        st.markdown("### 🎥 **Recommended Movies:**")  
-        recommendations = recommend_movies(selected_movie)
-        for index, row in recommendations.iterrows():
-            st.write(f"**{row['title']}** - {row['description']}")
-    else:
-        st.warning("⚠️ Please enter or select a movie.")
+with col1:
+    selected_movie = st.selectbox("", [""] + df_movies["title"].tolist())
+
+with col2:
+    if st.button("🍿 Get Recommendations"):
+        if selected_movie:
+            st.markdown("### 🎥 **Recommended Movies:**")  
+            recommendations = recommend_movies(selected_movie)
+            for index, row in recommendations.iterrows():
+                st.markdown(f"<p class='movie-title'>{row['title']}</p><p>{row['description']}</p>", unsafe_allow_html=True)
+        else:
+            st.warning("⚠️ Please enter or select a movie.")
