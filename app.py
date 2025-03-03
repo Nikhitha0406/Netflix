@@ -4,7 +4,7 @@ import os
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-# Apply Custom Background & Styling
+# Apply Custom Styling
 page_bg = """
 <style>
 body {
@@ -13,53 +13,53 @@ body {
 }
 .stApp {
     background: rgba(0, 0, 0, 0.9);
-    padding: 50px;
+    padding: 20px;
 }
 h1 {
-    color: #FF0000;
+    color: white;
     text-align: center;
-    font-size: 70px;
-    margin-bottom: 40px;
+    font-size: 45px;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
-h2, h3, label {
+h2, label {
     color: white !important;
-    font-size: 24px;
+    font-size: 20px;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 .stButton>button {
     background-color: #FF0000;
     color: white;
-    font-size: 22px;
-    border-radius: 10px;
+    font-size: 18px;
+    border-radius: 6px;
     width: 100%;
-    padding: 15px;
+    padding: 10px;
     transition: 0.3s;
-    margin-top: 20px;
 }
 .stButton>button:hover {
     background-color: #cc0000;
 }
 input, select {
-    font-size: 20px;
-    padding: 15px;
+    font-size: 16px;
+    padding: 10px;
     width: 100%;
     background: rgba(255, 255, 255, 0.1);
     border: 2px solid #FF0000;
     color: white;
-    border-radius: 8px;
+    border-radius: 6px;
     text-align: center;
 }
 .letter {
-    font-size: 80px;
+    font-size: 40px;
     color: #FF0000;
     font-weight: bold;
     display: inline-block;
     animation: swing 1s ease-in-out infinite alternate;
 }
 @keyframes swing {
-    0% { transform: rotate(-10deg); }
-    100% { transform: rotate(10deg); }
+    0% { transform: rotate(-5deg); }
+    100% { transform: rotate(5deg); }
 }
 </style>
 """
@@ -67,13 +67,10 @@ st.markdown(page_bg, unsafe_allow_html=True)
 
 # Netflix Swinging Animation Title
 netflix_text = "NETFLIX"
-animated_netflix = "".join([f'<span class="letter" style="animation-delay:{i*0.2}s;">{char}</span>' for i, char in enumerate(netflix_text)])
+animated_netflix = "".join([f'<span class="letter" style="animation-delay:{i*0.15}s;">{char}</span>' for i, char in enumerate(netflix_text)])
 
 st.markdown(f"<h1>🎬 Netflix Movie Recommendation System</h1>", unsafe_allow_html=True)
 st.markdown(f"<h1>{animated_netflix}</h1>", unsafe_allow_html=True)
-
-# Add spacing
-st.markdown("<br><br>", unsafe_allow_html=True)
 
 # Define CSV file path
 csv_path = "netflix_titles.csv"
@@ -126,12 +123,8 @@ st.markdown("### 🔍 **Enter or Search a Movie:**")
 movie_list = df_movies["title"].tolist()
 selected_movie = st.selectbox("", [""] + movie_list)
 
-# Add spacing
-st.markdown("<br>", unsafe_allow_html=True)
-
 # Button to get recommendations
 if st.button("🍿 Get Recommendations"):
-    st.markdown("<br>", unsafe_allow_html=True)
     if selected_movie:
         st.markdown("### 🎥 **Recommended Movies:**")  
         recommendations = recommend_movies(selected_movie)
