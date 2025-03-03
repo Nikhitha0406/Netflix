@@ -4,7 +4,7 @@ import os
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-# Apply custom CSS for a neon cyberpunk style
+# Apply custom CSS for a movie-themed background & styling
 st.markdown("""
     <style>
         body {
@@ -12,34 +12,42 @@ st.markdown("""
             color: white;
         }
         .stApp {
-            background-color: #000000;
+            background: url("https://wallpapercave.com/wp/wp4471167.jpg") no-repeat center center fixed;
+            background-size: cover;
+            color: white;
         }
         .title {
             font-size: 50px;
             font-weight: bold;
             text-align: center;
-            color: #00D4FF;
-            text-shadow: 3px 3px 10px #00D4FF;
+            color: #FF4500;
+            text-shadow: 4px 4px 10px #FF4500;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px;
+            border-radius: 10px;
         }
         .subheader {
             font-size: 30px;
             font-weight: bold;
             text-align: center;
-            color: #9A00FF;
-            text-shadow: 2px 2px 10px #9A00FF;
+            color: #FFD700;
+            text-shadow: 2px 2px 10px #FFD700;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 5px;
+            border-radius: 8px;
         }
         .movie-card {
-            background: linear-gradient(135deg, #242424, #1E1E1E);
+            background: rgba(20, 20, 20, 0.85);
             padding: 20px;
             border-radius: 12px;
             margin-bottom: 15px;
-            box-shadow: 3px 3px 20px rgba(0, 212, 255, 0.6);
+            box-shadow: 3px 3px 15px rgba(255, 69, 0, 0.7);
             transition: transform 0.3s ease-in-out;
-            border-left: 5px solid #00D4FF;
+            border-left: 5px solid #FF4500;
         }
         .movie-card:hover {
             transform: scale(1.05);
-            border-left: 5px solid #9A00FF;
+            border-left: 5px solid #FFD700;
         }
         .movie-title {
             font-size: 22px;
@@ -48,22 +56,22 @@ st.markdown("""
         }
         .movie-description {
             font-size: 18px;
-            color: #CCCCCC;
+            color: #DDDDDD;
         }
         .stTextInput > div > div > input {
-            border: 2px solid #00D4FF;
-            background-color: #121212;
+            border: 2px solid #FFD700;
+            background-color: #222222;
             color: white;
             font-size: 18px;
         }
         .stSelectbox > div > div {
-            border: 2px solid #00D4FF;
-            background-color: #121212;
+            border: 2px solid #FFD700;
+            background-color: #222222;
             color: white;
             font-size: 18px;
         }
         .stButton > button {
-            background: linear-gradient(135deg, #00D4FF, #9A00FF);
+            background: linear-gradient(135deg, #FF4500, #FFD700);
             color: white;
             border-radius: 12px;
             padding: 15px 25px;
@@ -71,12 +79,12 @@ st.markdown("""
             font-weight: bold;
             transition: 0.3s;
             border: none;
-            box-shadow: 2px 2px 15px rgba(154, 0, 255, 0.6);
+            box-shadow: 2px 2px 15px rgba(255, 69, 0, 0.8);
         }
         .stButton > button:hover {
-            background: linear-gradient(135deg, #9A00FF, #00D4FF);
+            background: linear-gradient(135deg, #FFD700, #FF4500);
             transform: scale(1.1);
-            box-shadow: 2px 2px 25px rgba(154, 0, 255, 0.9);
+            box-shadow: 2px 2px 25px rgba(255, 69, 0, 1);
         }
     </style>
 """, unsafe_allow_html=True)
@@ -128,10 +136,10 @@ def recommend_movies(title, df=df_movies, similarity=similarity_matrix):
     return df.iloc[movie_indices][["title", "description"]]
 
 # Streamlit UI
-st.markdown('<p class="title">🎬 Netflix Movie Recommendation System</p>', unsafe_allow_html=True)
+st.markdown('<p class="title">🍿 Netflix Movie Recommendation System 🍿</p>', unsafe_allow_html=True)
 
 # Movie input options
-st.markdown('<p class="subheader">💡 Find Your Next Movie Night Pick 💡</p>', unsafe_allow_html=True)
+st.markdown('<p class="subheader">🎬 Find Your Next Movie Night Pick! 🎬</p>', unsafe_allow_html=True)
 movie_name = st.text_input("🔍 Enter a movie title:")
 movie_list = df_movies["title"].tolist()
 selected_movie = st.selectbox("🎞️ Or select a movie:", [""] + movie_list)
