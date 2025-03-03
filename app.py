@@ -23,7 +23,7 @@ h1 {
     margin-bottom: 10px;
     letter-spacing: 3px;
 }
-h2, label, p, .stTextInput, .stSelectbox, .stMarkdown {
+h2, label, p, .stMarkdown {
     color: white !important;
     font-size: 18px;
 }
@@ -40,9 +40,9 @@ h2, label, p, .stTextInput, .stSelectbox, .stMarkdown {
     background-color: #cc0000;
 }
 input, select {
-    font-size: 12px;  /* Reduced font size */
+    font-size: 10px;  /* Decreased font size */
     padding: 4px;  /* Reduced padding */
-    width: 50%;  /* Adjusted width */
+    width: 45%;  /* Adjusted width */
     background: rgba(255, 255, 255, 0.1);
     border: 2px solid white;
     color: white;
