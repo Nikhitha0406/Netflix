@@ -30,19 +30,19 @@ h2, label, p, .stTextInput, .stSelectbox, .stMarkdown {
 .stButton>button {
     background-color: #FF0000;
     color: white;
-    font-size: 18px;
+    font-size: 16px;
     border-radius: 6px;
     width: 100%;
-    padding: 10px;
+    padding: 8px;
     transition: 0.3s;
 }
 .stButton>button:hover {
     background-color: #cc0000;
 }
 input, select {
-    font-size: 14px;  /* Reduced the font size */
-    padding: 6px;  /* Reduced padding */
-    width: 60%;  /* Smaller width */
+    font-size: 12px;  /* Reduced font size */
+    padding: 4px;  /* Reduced padding */
+    width: 50%;  /* Adjusted width */
     background: rgba(255, 255, 255, 0.1);
     border: 2px solid white;
     color: white;
@@ -66,7 +66,7 @@ input, select {
 .movie-title {
     color: #FFD700; /* Gold color for movie titles */
     font-weight: bold;
-    font-size: 20px;
+    font-size: 18px;
 }
 </style>
 """
