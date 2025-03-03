@@ -20,6 +20,10 @@ h1 {
     text-align: center;
     font-size: 50px;
 }
+h2, h3, label {
+    color: white !important;  /* Ensures bright white text */
+    font-size: 22px;
+}
 .stButton>button {
     background-color: #FF0000;
     color: white;
@@ -59,7 +63,7 @@ st.markdown(page_bg, unsafe_allow_html=True)
 netflix_text = "NETFLIX"
 animated_netflix = "".join([f'<span class="letter" style="animation-delay:{i*0.2}s;">{char}</span>' for i, char in enumerate(netflix_text)])
 
-st.subheader("🎬 Netflix Movie Recommendation System")
+st.subheader("🎬 **Netflix Movie Recommendation System**")
 st.markdown(f"<h1>{animated_netflix}</h1>", unsafe_allow_html=True)
 
 # Define CSV file path
@@ -109,14 +113,15 @@ def recommend_movies(title, df=df_movies, similarity=similarity_matrix):
     return df.iloc[movie_indices][["title", "description"]]
 
 # **Unified Input Bar**: Type or Select
+st.markdown("### 🔍 **Enter or Search a Movie:**")  # White heading for search bar
 movie_list = df_movies["title"].tolist()
-selected_movie = st.selectbox("🔍 Search or Select a Movie:", [""] + movie_list)
+selected_movie = st.selectbox("", [""] + movie_list)
 
 # Button to get recommendations
 if st.button("🍿 Get Recommendations"):
     if selected_movie:
+        st.markdown("### 🎥 **Recommended Movies:**")  # White heading for results
         recommendations = recommend_movies(selected_movie)
-        st.subheader("🎥 Recommended Movies:")
         for index, row in recommendations.iterrows():
             st.write(f"**{row['title']}** - {row['description']}")
     else:
