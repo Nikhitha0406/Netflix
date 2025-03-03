@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import os
+import time
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -8,19 +9,17 @@ from sklearn.metrics.pairwise import cosine_similarity
 page_bg = """
 <style>
 body {
-    background-image: url("https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?fm=jpg&q=60&w=3000");
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    background-color: black;
     color: white;
 }
 .stApp {
-    background: rgba(0, 0, 0, 0.85);  /* Dark overlay for better readability */
+    background: rgba(0, 0, 0, 0.85);
     padding: 20px;
 }
-h1, h2, h3 {
-    color: #FF0000;  /* Netflix Red */
+h1 {
+    color: #FF0000;
     text-align: center;
+    font-size: 50px;
 }
 .stButton>button {
     background-color: #FF0000;
@@ -38,9 +37,29 @@ input, select {
     color: white;
     border-radius: 5px;
 }
+.letter {
+    font-size: 50px;
+    color: #FF0000;
+    font-weight: bold;
+    display: inline-block;
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 </style>
 """
 st.markdown(page_bg, unsafe_allow_html=True)
+
+# Netflix Animated Title
+netflix_text = "NETFLIX"
+animated_title = "".join([f'<span class="letter" style="animation-delay:{i*0.3}s;">{char}</span>' for i, char in enumerate(netflix_text)])
+st.markdown(f"<h1>{animated_title}</h1>", unsafe_allow_html=True)
+
+# Add Netflix Logo
+st.image("https://static.vecteezy.com/system/resources/previews/039/339/511/non_2x/netflix-company-logo-button-for-social-media-phone-icon-symbol-editorial-web-free-vector.jpg", width=300)
 
 # Define CSV file path
 csv_path = "netflix_titles.csv"
@@ -89,7 +108,7 @@ def recommend_movies(title, df=df_movies, similarity=similarity_matrix):
     return df.iloc[movie_indices][["title", "description"]]
 
 # Streamlit UI
-st.title("🎬 **Netflix Movie Recommendation System**")
+st.subheader("🎬 Netflix Movie Recommendation System")
 
 # **Unified Input Bar**: Type or Select
 movie_list = df_movies["title"].tolist()
