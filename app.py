@@ -1,13 +1,26 @@
 import streamlit as st
 import pandas as pd
+import zipfile
+import os
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-# Load dataset
-@st.cache_data  # Cache the data loading function
+# Define paths
+zip_path = "netflix_titles.csv.zip"
+extract_folder = "extracted_files"
+csv_path = os.path.join(extract_folder, "netflix_titles.csv")
+
+# Extract ZIP file if not already extracted
+if not os.path.exists(extract_folder):
+    os.makedirs(extract_folder)
+    with zipfile.ZipFile(zip_path, "r") as zip_ref:
+        zip_ref.extractall(extract_folder)
+
+# Load dataset with caching
+@st.cache_data
 def load_data():
-    df = pd.read_csv("netflix_titles.csv")
-    df.fillna("", inplace=True)  # Handle missing values
+    df = pd.read_csv(csv_path)
+    df.fillna({"description": "", "listed_in": "", "director": "", "cast": ""}, inplace=True)
     df_movies = df[df["type"] == "Movie"].copy()
     df_movies["combined_features"] = (
         df_movies["listed_in"] + " " +
@@ -19,8 +32,8 @@ def load_data():
 
 df_movies = load_data()
 
-# Compute TF-IDF
-@st.cache_data  # Cache the vectorizer to improve performance
+# Compute TF-IDF with caching
+@st.cache_data
 def compute_tfidf_matrix(data):
     tfidf = TfidfVectorizer(stop_words="english")
     tfidf_matrix = tfidf.fit_transform(data["combined_features"])
@@ -28,34 +41,36 @@ def compute_tfidf_matrix(data):
 
 tfidf_matrix, similarity_matrix = compute_tfidf_matrix(df_movies)
 
-df_movies.reset_index(drop=True, inplace=True)
-
 # Function to recommend movies
-def recommend_movies(title):
-    idx = df_movies[df_movies["title"].str.lower() == title.lower()].index
-    if len(idx) == 0:
-        return ["Movie not found."]
-    idx = idx[0]
-    
-    # Get similarity scores
-    sim_scores = list(enumerate(similarity_matrix[idx]))
-    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)[1:6]  # Exclude itself
-    
-    # Retrieve movie titles
+def recommend_movies(title, df=df_movies, similarity=similarity_matrix):
+    indices = df[df["title"].str.lower() == title.lower()].index
+    if len(indices) == 0:
+        return ["Movie not found. Please try another title."]
+    idx = indices[0]
+
+    sim_scores = list(enumerate(similarity[idx]))
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)[1:6]  # Top 5 recommendations
     movie_indices = [i[0] for i in sim_scores]
-    return df_movies.iloc[movie_indices]["title"].tolist()
+    
+    return df.iloc[movie_indices][["title", "description"]]
 
 # Streamlit UI
-st.title("Netflix Movie Recommendation System")
+st.title("🎬 Netflix Movie Recommendation System")
 
-# Provide dropdown for better UX
+# Option 1: Text Input
+movie_name = st.text_input("Enter a movie title:")
+
+# Option 2: Dropdown for better UX
 movie_list = df_movies["title"].tolist()
-movie_name = st.selectbox("Select a movie:", [""] + movie_list)
+selected_movie = st.selectbox("Or select a movie:", [""] + movie_list)
 
-if st.button("Get Recommendations") and movie_name:
-    recommendations = recommend_movies(movie_name)
-    st.subheader("Recommended Movies:")
-    for movie in recommendations:
-        st.write(f"- {movie}")
-
-
+# Button to get recommendations
+if st.button("Get Recommendations"):
+    query_movie = selected_movie if selected_movie else movie_name
+    if query_movie:
+        recommendations = recommend_movies(query_movie)
+        st.subheader("Recommended Movies:")
+        for index, row in recommendations.iterrows():
+            st.write(f"**{row['title']}** - {row['description']}")
+    else:
+        st.warning("Please enter or select a movie.")
