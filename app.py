@@ -167,4 +167,4 @@ if search_button:
 
 # Clear Button Functionality
 if clear_button:
-    st.experimental_rerun()
+    st.rerun()
