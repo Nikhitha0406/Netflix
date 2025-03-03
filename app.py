@@ -3,7 +3,7 @@ import pandas as pd
 import os
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from fuzzywuzzy import process  # Import fuzzy matching for closest title match
+from rapidfuzz import process  # Replace fuzzywuzzy with rapidfuzz
 
 # Apply Custom Styling
 page_bg = """
