@@ -18,9 +18,10 @@ body {
 h1 {
     color: white;
     text-align: center;
-    font-size: 45px;
+    font-size: 50px;
     font-weight: bold;
     margin-bottom: 10px;
+    letter-spacing: 3px;
 }
 h2, label {
     color: white !important;
@@ -51,23 +52,24 @@ input, select {
     text-align: center;
 }
 .letter {
-    font-size: 40px;
-    color: #FF0000;
+    font-size: 50px;
+    color: white;
     font-weight: bold;
     display: inline-block;
-    animation: swing 1s ease-in-out infinite alternate;
+    opacity: 0;
+    animation: fadeIn 1s forwards;
 }
-@keyframes swing {
-    0% { transform: rotate(-5deg); }
-    100% { transform: rotate(5deg); }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 </style>
 """
 st.markdown(page_bg, unsafe_allow_html=True)
 
-# Netflix Swinging Animation Title
+# Netflix Animated Title (One-by-One Letter Reveal)
 netflix_text = "NETFLIX"
-animated_netflix = "".join([f'<span class="letter" style="animation-delay:{i*0.15}s;">{char}</span>' for i, char in enumerate(netflix_text)])
+animated_netflix = "".join([f'<span class="letter" style="animation-delay:{i*0.5}s;">{char}</span>' for i, char in enumerate(netflix_text)])
 
 st.markdown(f"<h1>🎬 Netflix Movie Recommendation System</h1>", unsafe_allow_html=True)
 st.markdown(f"<h1>{animated_netflix}</h1>", unsafe_allow_html=True)
