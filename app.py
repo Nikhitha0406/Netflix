@@ -4,7 +4,7 @@ import os
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-# Apply Custom Styling
+# Apply Custom Styling for Mobile View
 page_bg = """
 <style>
 body {
@@ -13,43 +13,43 @@ body {
 }
 .stApp {
     background: rgba(0, 0, 0, 0.9);
-    padding: 20px;
+    padding: 10px;
 }
 h1 {
     color: white;
     text-align: center;
-    font-size: 60px;
+    font-size: 40px; /* Reduced size for mobile */
     font-weight: bold;
     margin-bottom: 10px;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
 }
 h2, label, p, .stMarkdown {
     color: white !important;
-    font-size: 16px;
+    font-size: 14px;
 }
 .stButton>button {
     background-color: #FF0000;
     color: white;
-    font-size: 16px;
+    font-size: 14px;
     border-radius: 6px;
-    width: 100%;
-    padding: 8px;
+    width: 100%; /* Full width for better touch interaction */
+    padding: 12px;
     transition: 0.3s;
 }
 .stButton>button:hover {
     background-color: #cc0000;
 }
 input, select {
-    font-size: 10px;
-    padding: 4px;
-    width: 45%;
+    font-size: 14px;
+    padding: 8px;
+    width: 100%; /* Full width for mobile */
     background: rgba(255, 255, 255, 0.1);
     border: 2px solid white;
     color: white;
     border-radius: 6px;
 }
 .netflix-text {
-    font-size: 70px;
+    font-size: 50px; /* Reduced for mobile */
     font-weight: bold;
     text-align: center;
     color: red;
@@ -58,7 +58,7 @@ input, select {
     display: inline-block;
     opacity: 0;
     animation: fadeInOut 4s infinite;
-    font-size: 80px;
+    font-size: 60px; /* Adjusted size */
 }
 @keyframes fadeInOut {
     0% { opacity: 0; transform: translateY(-10px); }
@@ -69,7 +69,16 @@ input, select {
 .movie-title {
     color: #FFD700;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 35px;
+    }
+    .letter {
+        font-size: 50px;
+    }
 }
 </style>
 """
@@ -77,7 +86,7 @@ input, select {
 st.markdown(page_bg, unsafe_allow_html=True)
 
 # Netflix Movie Recommendation System Title
-st.markdown(f"<h1>Netflix Movie Recommendation System</h1>", unsafe_allow_html=True)
+st.markdown(f"<h1>Netflix Movie Recommender</h1>", unsafe_allow_html=True)
 
 # Netflix Animated Title
 netflix_text = "NETFLIX"
@@ -130,15 +139,32 @@ def recommend_movies(title, df=df_movies, similarity=similarity_matrix):
     
     return df.iloc[movie_indices][["title", "description"]]
 
-# Search Bar & Button
-st.markdown("### 🔍 **Enter or Search a Movie:**")  
-selected_movie = st.selectbox("", [""] + df_movies["title"].tolist(), key="movie_select", index=0)
+# Layout for Mobile View
+with st.container():
+    st.markdown("### 🔍 **Enter or Search a Movie:**")  
+    selected_movie = st.selectbox("", [""] + df_movies["title"].tolist(), key="movie_select")
 
-if st.button("🍿 Get Recommendations"):
+    st.markdown("")
+
+    col1, col2 = st.columns([1, 1])
+
+    with col1:
+        search_button = st.button("🍿 Get Recommendations", use_container_width=True)
+
+    with col2:
+        clear_button = st.button("❌ Clear", use_container_width=True)
+
+# Recommendation Output
+if search_button:
     if selected_movie:
         st.markdown("### 🎥 **Recommended Movies:**")  
         recommendations = recommend_movies(selected_movie)
+        
         for index, row in recommendations.iterrows():
             st.markdown(f"<p class='movie-title'>{row['title']}</p><p>{row['description']}</p>", unsafe_allow_html=True)
     else:
         st.warning("⚠️ Please enter or select a movie.")
+
+# Clear Button Functionality
+if clear_button:
+    st.experimental_rerun()
