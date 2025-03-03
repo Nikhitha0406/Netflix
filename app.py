@@ -64,14 +64,9 @@ input, select {
     to { opacity: 1; transform: translateY(0); }
 }
 .movie-title {
-    color: red;
+    color: #FFD700; /* Gold color for movie titles */
     font-weight: bold;
     font-size: 20px;
-}
-.search-container {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
 }
 </style>
 """
@@ -130,19 +125,15 @@ def recommend_movies(title, df=df_movies, similarity=similarity_matrix):
     
     return df.iloc[movie_indices][["title", "description"]]
 
-# **Left-aligned Search/Select Bar**
+# **Search/Select Bar & Button Below Each Other**
 st.markdown("### 🔍 **Enter or Search a Movie:**")  
-col1, col2 = st.columns([2, 3])
+selected_movie = st.selectbox("", [""] + df_movies["title"].tolist())
 
-with col1:
-    selected_movie = st.selectbox("", [""] + df_movies["title"].tolist())
-
-with col2:
-    if st.button("🍿 Get Recommendations"):
-        if selected_movie:
-            st.markdown("### 🎥 **Recommended Movies:**")  
-            recommendations = recommend_movies(selected_movie)
-            for index, row in recommendations.iterrows():
-                st.markdown(f"<p class='movie-title'>{row['title']}</p><p>{row['description']}</p>", unsafe_allow_html=True)
-        else:
-            st.warning("⚠️ Please enter or select a movie.")
+if st.button("🍿 Get Recommendations"):
+    if selected_movie:
+        st.markdown("### 🎥 **Recommended Movies:**")  
+        recommendations = recommend_movies(selected_movie)
+        for index, row in recommendations.iterrows():
+            st.markdown(f"<p class='movie-title'>{row['title']}</p><p>{row['description']}</p>", unsafe_allow_html=True)
+    else:
+        st.warning("⚠️ Please enter or select a movie.")
