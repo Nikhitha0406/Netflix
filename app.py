@@ -57,11 +57,12 @@ input, select {
 .letter {
     display: inline-block;
     opacity: 0;
-    animation: fadeIn 1s forwards infinite;
+    animation: fadeInOut 4s infinite;
 }
-@keyframes fadeIn {
+@keyframes fadeInOut {
     0% { opacity: 0; transform: translateY(-10px); }
-    50% { opacity: 1; transform: translateY(0); }
+    20% { opacity: 1; transform: translateY(0); }
+    80% { opacity: 1; }
     100% { opacity: 0; }
 }
 .movie-title {
@@ -71,6 +72,7 @@ input, select {
 }
 </style>
 """
+
 st.markdown(page_bg, unsafe_allow_html=True)
 
 # Netflix Animated Title
