@@ -18,14 +18,14 @@ body {
 h1 {
     color: white;
     text-align: center;
-    font-size: 60px;  /* Increased Netflix size */
+    font-size: 60px;
     font-weight: bold;
     margin-bottom: 10px;
     letter-spacing: 3px;
 }
 h2, label, p, .stMarkdown {
     color: white !important;
-    font-size: 16px; /* Reduced recommendation size */
+    font-size: 16px;
 }
 .stButton>button {
     background-color: #FF0000;
@@ -40,16 +40,16 @@ h2, label, p, .stMarkdown {
     background-color: #cc0000;
 }
 input, select {
-    font-size: 10px;  /* Decreased font size */
-    padding: 4px;  /* Reduced padding */
-    width: 45%;  /* Adjusted width */
+    font-size: 10px;
+    padding: 4px;
+    width: 45%;
     background: rgba(255, 255, 255, 0.1);
     border: 2px solid white;
     color: white;
     border-radius: 6px;
 }
 .netflix-text {
-    font-size: 70px; /* Enlarged Netflix text */
+    font-size: 70px;
     font-weight: bold;
     text-align: center;
     color: red;
@@ -58,7 +58,7 @@ input, select {
     display: inline-block;
     opacity: 0;
     animation: fadeInOut 4s infinite;
-    font-size: 80px; /* Increased animation size */
+    font-size: 80px;
 }
 @keyframes fadeInOut {
     0% { opacity: 0; transform: translateY(-10px); }
@@ -67,21 +67,22 @@ input, select {
     100% { opacity: 0; }
 }
 .movie-title {
-    color: #FFD700; /* Gold color for movie titles */
+    color: #FFD700;
     font-weight: bold;
-    font-size: 16px; /* Reduced size */
+    font-size: 16px;
 }
 </style>
 """
 
 st.markdown(page_bg, unsafe_allow_html=True)
 
+# Netflix Movie Recommendation System Title
+st.markdown(f"<h1>Netflix Movie Recommendation System</h1>", unsafe_allow_html=True)
+
 # Netflix Animated Title
 netflix_text = "NETFLIX"
 animated_netflix = "".join([f'<span class="letter" style="animation-delay:{i*0.5}s;">{char}</span>' for i, char in enumerate(netflix_text)])
-
 st.markdown(f"<h1>🎬 <span class='netflix-text'>{animated_netflix}</span></h1>", unsafe_allow_html=True)
-st.markdown(f"<h1>Netflix Movie Recommendation System</h1>", unsafe_allow_html=True)
 
 # Define CSV file path
 csv_path = "netflix_titles.csv"
@@ -124,12 +125,12 @@ def recommend_movies(title, df=df_movies, similarity=similarity_matrix):
     idx = indices[0]
 
     sim_scores = list(enumerate(similarity[idx]))
-    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)[1:6]  # Top 5 recommendations
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)[1:6]
     movie_indices = [i[0] for i in sim_scores]
     
     return df.iloc[movie_indices][["title", "description"]]
 
-# **Search/Select Bar & Button Below Each Other**
+# Search Bar & Button
 st.markdown("### 🔍 **Enter or Search a Movie:**")  
 selected_movie = st.selectbox("", [""] + df_movies["title"].tolist(), key="movie_select", index=0)
 
