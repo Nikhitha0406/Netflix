@@ -51,10 +51,13 @@ input, select {
     border-radius: 6px;
     text-align: center;
 }
-.letter {
+.netflix-text {
     font-size: 50px;
-    color: white;
     font-weight: bold;
+    text-align: center;
+    color: red;
+}
+.letter {
     display: inline-block;
     opacity: 0;
     animation: fadeIn 1s forwards;
@@ -67,12 +70,12 @@ input, select {
 """
 st.markdown(page_bg, unsafe_allow_html=True)
 
-# Netflix Animated Title (One-by-One Letter Reveal)
+# Netflix Animated Title (One-by-One Letter Reveal in Red)
 netflix_text = "NETFLIX"
 animated_netflix = "".join([f'<span class="letter" style="animation-delay:{i*0.5}s;">{char}</span>' for i, char in enumerate(netflix_text)])
 
-st.markdown(f"<h1>🎬 Netflix Movie Recommendation System</h1>", unsafe_allow_html=True)
-st.markdown(f"<h1>{animated_netflix}</h1>", unsafe_allow_html=True)
+st.markdown(f"<h1>🎬 <span class='netflix-text'>{animated_netflix}</span></h1>", unsafe_allow_html=True)
+st.markdown(f"<h1>Netflix Movie Recommendation System</h1>", unsafe_allow_html=True)
 
 # Define CSV file path
 csv_path = "netflix_titles.csv"
