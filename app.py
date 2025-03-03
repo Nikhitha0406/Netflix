@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import os
+import time
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -23,7 +24,7 @@ h1 {
     margin-bottom: 10px;
     letter-spacing: 3px;
 }
-h2, label, p, .stTextInput, .stSelectbox, .stMarkdown {
+h2, label, p, .stMarkdown {
     color: white !important;
     font-size: 18px;
 }
@@ -33,16 +34,16 @@ h2, label, p, .stTextInput, .stSelectbox, .stMarkdown {
     font-size: 18px;
     border-radius: 6px;
     width: 100%;
-    padding: 10px;
+    padding: 8px;
     transition: 0.3s;
 }
 .stButton>button:hover {
     background-color: #cc0000;
 }
 input, select {
-    font-size: 14px;  /* Reduced the font size */
-    padding: 6px;  /* Reduced padding */
-    width: 60%;  /* Smaller width */
+    font-size: 12px;  /* Reduced text size */
+    padding: 4px;  /* Reduced padding */
+    width: 50%;  /* Adjust width */
     background: rgba(255, 255, 255, 0.1);
     border: 2px solid white;
     color: white;
@@ -54,29 +55,29 @@ input, select {
     text-align: center;
     color: red;
 }
-.letter {
-    display: inline-block;
-    opacity: 0;
-    animation: fadeIn 1s forwards;
-}
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
 .movie-title {
     color: #FFD700; /* Gold color for movie titles */
     font-weight: bold;
-    font-size: 20px;
+    font-size: 18px;
 }
 </style>
 """
 st.markdown(page_bg, unsafe_allow_html=True)
 
-# Netflix Animated Title
-netflix_text = "NETFLIX"
-animated_netflix = "".join([f'<span class="letter" style="animation-delay:{i*0.5}s;">{char}</span>' for i, char in enumerate(netflix_text)])
+# **Netflix Animated Title**
+def animate_netflix():
+    netflix_text = "NETFLIX"
+    animated_text = ""
+    for i in range(len(netflix_text) + 1):
+        animated_text = netflix_text[:i]
+        st.markdown(f"<h1 class='netflix-text'>{animated_text}</h1>", unsafe_allow_html=True)
+        time.sleep(0.4)
+        st.empty()  
 
-st.markdown(f"<h1>🎬 <span class='netflix-text'>{animated_netflix}</span></h1>", unsafe_allow_html=True)
+# Run Animation in a Loop
+for _ in range(3):  
+    animate_netflix()
+
 st.markdown(f"<h1>Netflix Movie Recommendation System</h1>", unsafe_allow_html=True)
 
 # Define CSV file path
