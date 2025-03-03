@@ -57,11 +57,12 @@ input, select {
 .letter {
     display: inline-block;
     opacity: 0;
-    animation: fadeIn 1s forwards;
+    animation: fadeIn 1s forwards infinite;
 }
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+    0% { opacity: 0; transform: translateY(-10px); }
+    50% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; }
 }
 .movie-title {
     color: #FFD700; /* Gold color for movie titles */
