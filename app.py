@@ -4,28 +4,30 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 # Load dataset
-df = pd.read_csv("netflix_titles.csv")
+@st.cache_data  # Cache the data loading function
+def load_data():
+    df = pd.read_csv("netflix_titles.csv")
+    df.fillna("", inplace=True)  # Handle missing values
+    df_movies = df[df["type"] == "Movie"].copy()
+    df_movies["combined_features"] = (
+        df_movies["listed_in"] + " " +
+        df_movies["director"] + " " +
+        df_movies["cast"] + " " +
+        df_movies["description"]
+    )
+    return df_movies
 
-# Preprocess dataset
-df.fillna("", inplace=True)  # Handle missing values
-df_movies = df[df["type"] == "Movie"].copy()
-
-# Combine relevant text features
-df_movies["combined_features"] = (
-    df_movies["listed_in"] + " " +
-    df_movies["director"] + " " +
-    df_movies["cast"] + " " +
-    df_movies["description"]
-)
+df_movies = load_data()
 
 # Compute TF-IDF
-tfidf = TfidfVectorizer(stop_words="english")
-tfidf_matrix = tfidf.fit_transform(df_movies["combined_features"])
+@st.cache_data  # Cache the vectorizer to improve performance
+def compute_tfidf_matrix(data):
+    tfidf = TfidfVectorizer(stop_words="english")
+    tfidf_matrix = tfidf.fit_transform(data["combined_features"])
+    return tfidf_matrix, cosine_similarity(tfidf_matrix)
 
-# Compute similarity matrix
-similarity_matrix = cosine_similarity(tfidf_matrix)
+tfidf_matrix, similarity_matrix = compute_tfidf_matrix(df_movies)
 
-# Reset index for easy lookup
 df_movies.reset_index(drop=True, inplace=True)
 
 # Function to recommend movies
@@ -52,7 +54,8 @@ movie_name = st.selectbox("Select a movie:", [""] + movie_list)
 
 if st.button("Get Recommendations") and movie_name:
     recommendations = recommend_movies(movie_name)
-    st.write("Recommended Movies:")
+    st.subheader("Recommended Movies:")
     for movie in recommendations:
         st.write(f"- {movie}")
+
 
