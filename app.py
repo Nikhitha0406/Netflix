@@ -15,7 +15,7 @@ if not os.path.exists(csv_path):
 # Load dataset with caching
 @st.cache_data
 def load_data():
-    df = pd.read_csv(csv_path)
+    df = pd.read_csv(csv_path, encoding="utf-8")  # Ensure UTF-8 encoding
     df.fillna({"description": "", "listed_in": "", "director": "", "cast": ""}, inplace=True)
     df_movies = df[df["type"] == "Movie"].copy()
     df_movies["combined_features"] = (
@@ -51,7 +51,7 @@ def recommend_movies(title, df=df_movies, similarity=similarity_matrix):
     return df.iloc[movie_indices][["title", "description"]]
 
 # Streamlit UI
-st.title("\ud83c\udfac Netflix Movie Recommendation System")
+st.title("Netflix Movie Recommendation System")  # Fixed Unicode issue
 
 # Option 1: Text Input
 movie_name = st.text_input("Enter a movie title:")
