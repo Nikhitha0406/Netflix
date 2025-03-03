@@ -1,20 +1,16 @@
 import streamlit as st
 import pandas as pd
-import zipfile
 import os
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-# Define paths
-zip_path = "netflix_titles.csv.zip"
-extract_folder = "extracted_files"
-csv_path = os.path.join(extract_folder, "netflix_titles.csv")
+# Define CSV file path
+csv_path = "netflix_titles.csv"
 
-# Extract ZIP file if not already extracted
-if not os.path.exists(extract_folder):
-    os.makedirs(extract_folder)
-    with zipfile.ZipFile(zip_path, "r") as zip_ref:
-        zip_ref.extractall(extract_folder)
+# Check if file exists
+if not os.path.exists(csv_path):
+    st.error(f"File not found: {csv_path}. Ensure it is in the correct directory.")
+    st.stop()
 
 # Load dataset with caching
 @st.cache_data
@@ -55,7 +51,7 @@ def recommend_movies(title, df=df_movies, similarity=similarity_matrix):
     return df.iloc[movie_indices][["title", "description"]]
 
 # Streamlit UI
-st.title("🎬 Netflix Movie Recommendation System")
+st.title("\ud83c\udfac Netflix Movie Recommendation System")
 
 # Option 1: Text Input
 movie_name = st.text_input("Enter a movie title:")
